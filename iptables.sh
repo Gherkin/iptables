@@ -17,6 +17,9 @@ DNSIP3=
 # Accept everything from Broadcast
 -A INPUT -d 255.255.255.255 -m state --state NEW -j ACCEPT
 
+# Accept incoming OpenVPN connections
+-A INPUT -p udp -i enp3s0 -d $SERVERIP --dport 1194 -m state --state NEW -j ACCEPT
+
 # Accept everything coming from the virtual machines
 -A INPUT -i virbr0 -j ACCEPT
 
