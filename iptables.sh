@@ -36,7 +36,9 @@ DNSIP=
 # Accept outgoing HTTP requests (to permit yum to work)
 -A OUTPUT -p tcp -m tcp --dport 80 -m state --state NEW -j ACCEPT
 
-# Log everything before it gets dropped, for debugging purposes
+# Accept everything related to an established connection
 -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
--A OUTPUT -j LOG
 
+# Log everything before it gets dropped, for debugging purposes
+-A OUTPUT -j LOG
+-A OUTPUT -j DROP
