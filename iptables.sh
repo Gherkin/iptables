@@ -12,6 +12,9 @@ DNSIP=
 # Accept everything that is a response to a package we sent
 -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 
+# Accept everything from Broadcast
+-A INPUT -d 255.255.255.255 -m state --state NEW -j ACCEPT
+
 # Accept everything coming from the virtual machines
 -A INPUT -i virbr0 -j ACCEPT
 
