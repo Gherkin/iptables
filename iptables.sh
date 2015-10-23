@@ -43,6 +43,9 @@ DNSIP=
 -A OUTPUT -p tcp -m tcp --dport 443 -m state --state NEW -j ACCEPT
 -A OUTPUT -p tcp -m tcp --dport 80 -m state --state NEW -j ACCEPT
 
+# Accept outgoing FTP requests (to permit yum to work)
+-I OUTPUT 8 -p tcp -m tcp --dport 21 -m state --state NEW -j ACCEPT
+
 # Accept everything related to an established connection
 -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 
