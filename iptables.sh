@@ -27,8 +27,11 @@ DNSIP=
 # Accept everything going to virtual machines
 -A OUTPUT -o lo -j ACCEPT
 
-# Accept output going to ssh
+# Accept output going to established ssh
 -A OUTPUT -s $SERVERIP/32 -p tcp -m tcp --sport 22 --dport 513:65535 -m state --state ESTABLISHED -j ACCEPT
+
+# Accept new ssh connections 
+-A OUTPUT -s $SERVERIP/32 -p tcp -m tcp --dport 22 --sport 513:65535 -m state --state NEW -j ACCEPT
 
 # Accept connections to the DNS
 -A OUTPUT -s $SERVERIP/32 -d $DNSIP/32 -o enp3s0 -p udp -m udp --dport 53 -m state --state NEW -j ACCEPT
