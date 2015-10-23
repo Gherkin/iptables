@@ -33,7 +33,8 @@ DNSIP=
 # Accept everything going to the virtual machines
 -A OUTPUT -o virbr0 -j ACCEPT
 
-# Accept outgoing HTTP requests (to permit yum to work)
+# Accept outgoing HTTP and HTTPS requests (to permit yum to work)
+-A OUTPUT -p tcp -m tcp --dport 443 -m state --state NEW -j ACCEPT
 -A OUTPUT -p tcp -m tcp --dport 80 -m state --state NEW -j ACCEPT
 
 # Accept everything related to an established connection
