@@ -1,6 +1,8 @@
 #!/bin/bash
 SERVERIP=
-DNSIP=
+DNSIP1=
+DNSIP2=
+DNSIP3=
 
 
 # Accept everything on loopback
@@ -34,7 +36,9 @@ DNSIP=
 -A OUTPUT -s $SERVERIP/32 -p tcp -m tcp --dport 22 --sport 513:65535 -m state --state NEW -j ACCEPT
 
 # Accept connections to the DNS
--A OUTPUT -s $SERVERIP/32 -d $DNSIP/32 -o enp3s0 -p udp -m udp --dport 53 -m state --state NEW -j ACCEPT
+-A OUTPUT -s $SERVERIP/32 -d $DNSIP1/32 -o enp3s0 -p udp -m udp --dport 53 -m state --state NEW -j ACCEPT
+-A OUTPUT -s $SERVERIP/32 -d $DNSIP2/32 -o enp3s0 -p udp -m udp --dport 53 -m state --state NEW -j ACCEPT
+-A OUTPUT -s $SERVERIP/32 -d $DNSIP3/32 -o enp3s0 -p udp -m udp --dport 53 -m state --state NEW -j ACCEPT
 
 # Accept everything going to the virtual machines
 -A OUTPUT -o virbr0 -j ACCEPT
