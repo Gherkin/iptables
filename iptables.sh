@@ -4,6 +4,9 @@ DNSIP1=
 DNSIP2=
 DNSIP3=
 
+-A POSTROUTING -s 192.168.122.0/24 -d 10.8.0.0/24 -j ACCEPT
+
+-A POSTROUTING -s 192.168.122.0/24 -o enp3s0 -j MASQUERADE
 
 # Accept everything on loopback
 -A INPUT -i lo -j ACCEPT
@@ -23,11 +26,18 @@ DNSIP3=
 # Accept everything coming from the virtual machines
 -A INPUT -i virbr0 -j ACCEPT
 
+# Accept everything coming from established VPN connections
+-A INPUT -i tun0 -j ACCEPT
+
 # Log everything before it gets dropped, for debugging purposes
 -A INPUT -j LOG
 -A INPUT -j DROP
 
+# Forward established connections to the virtual machines
+-A FORWARD -d 192.168.122.0/24 -o virbr0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
+# Forward everything from VPN connections to virtual machines
+-A FORWARD -d 192.168.122.0/24 -i tun0 -o virbr0 -j ACCEPT
 
 # Accept everything going to virtual machines
 -A OUTPUT -o lo -j ACCEPT
